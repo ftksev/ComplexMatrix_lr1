@@ -9,7 +9,7 @@ public class ComplexMatrix {
         if (rows <= 0 || cols <= 0) {
             throw new IllegalArgumentException("Incorrect matrix size");
         }
-        else { // if it not works -> do the variant without else
+        else {
             this.rows = rows;
             this.cols = cols;
             this.data = new Complex[rows][cols];
@@ -161,12 +161,13 @@ public class ComplexMatrix {
         return this.multiply(other.inverse());
     }
 
+    //override for table output
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < rows; i++) {
             sb.append("[ ");
-            for (int j = 0; j < cols; j++) {
+            for (int j = 0; j < cols; j++) {                                 //align the columns
                 sb.append(String.format("%-22s", data[i][j].toString()));
             }
             sb.append("]\n");

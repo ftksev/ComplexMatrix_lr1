@@ -38,20 +38,23 @@ public class Complex {
     public double abs() {
         return Math.hypot(re, im);
     }
-    @Override   //переопределение и удобный вывод
+    @Override   //override for convenient output
     public String toString(){
-        if (im == 0) return String.format("%.4f", re);
-        if (re == 0) return String.format("%.4fi", im);
+        if (im == 0.0000) return String.format("%.4f", re);                      //If the im = zero, output only the re
+        if (re == 0.0000) return String.format("%.4fi", im);                     //If the re = zero, output only the im +i
         String sign = im >= 0 ? "+" : "-";
-        return String.format("%.4f %s %.4fi", re, sign, Math.abs(im));
+        return String.format("%.4f %s %.4fi", re, sign, Math.abs(im));           //abs(im), not to duplicate the sign
     }
+
+    //It is correct to compare complex numbers
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Complex)) return false;
-        Complex c = (Complex) o;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Complex)) return false;
+        Complex c = (Complex) object;
         return Double.compare(c.re, re) == 0 && Double.compare(c.im, im) == 0;
     }
+    //equals redefined -> hashCode redefined
     @Override
     public int hashCode() {
         return Double.hashCode(re)*31 + Double.hashCode(im);
