@@ -10,48 +10,55 @@ public class Main {
         System.out.println("=== Матрицы комплексных чисел ===");
 
         ComplexMatrix a = readMatrix("A");  //input and check
-        ComplexMatrix b = readMatrix("B");
+        ComplexMatrix b = null;
+
+        //ask by enter second matrix
+        System.out.print("\nEnter second matrix B? [y/N]: ");
+        String ans = scanner.nextLine().trim();
+        if (ans.equalsIgnoreCase("y")) {
+            b = readMatrix("B");
+        }
 
         System.out.println("\nMatrix A:");
         System.out.print(a);
-        System.out.println("\nMatrix B:");
-        System.out.print(b);
+        if (b != null) {
+            System.out.println("\nMatrix B:");
+            System.out.print(b);
+        } else {
+            System.out.println("\n(Matrix B is missing — only one-matrix operations are available)");
+        }
 
         boolean running = true;       //move the exit condition into a variable
         while (running) {
-            System.out.println("\nChoose the operation:");
-            System.out.println("1 — Addition (A + B)");
-            System.out.println("2 — Multiplication (A × B)");
-            System.out.println("3 — Division (A / B = A × B⁻¹)");
-            System.out.println("4 — Transposition A");
-            System.out.println("5 — Transposition B");
-            System.out.println("6 — Determinant A");
-            System.out.println("7 — Determinant B");
-            System.out.println("0 — Exit");
-            System.out.print("> ");
+            printMenu(b != null);
 
             String choice = scanner.nextLine().trim();
             try {  //
                 switch (choice) {  //processing of input values
                     case "1":
+                        requireB(b);
                         printResult("A + B", a.matrixAddition(b));
                         break;
                     case "2":
+                        requireB(b);
                         printResult("A × B", a.multiply(b));
                         break;
                     case "3":
+                        requireB(b);
                         printResult("A / B", a.divide(b));
                         break;
                     case "4":
                         printResult("Aᵀ", a.transpose());
                         break;
                     case "5":
+                        requireB(b);
                         printResult("Bᵀ", b.transpose());
                         break;
                     case "6":
                         System.out.println("det(A) = " + a.determinant());
                         break;
                     case "7":
+                        requireB(b);
                         System.out.println("det(B) = " + b.determinant());
                         break;
                     case "0":
@@ -65,6 +72,34 @@ public class Main {
             }
         }
         System.out.println("Program is finished");
+    }
+
+    // Menu depends on the having B
+    private static void printMenu(boolean hasB) {
+        System.out.println("\nChoose the operation:");
+        if (hasB) {
+            System.out.println("1 — Addition (A + B)");
+            System.out.println("2 — Multiplication (A × B)");
+            System.out.println("3 — Division (A / B = A × B⁻¹)");
+        }
+        System.out.println("4 — Transposition A");
+        if (hasB) {
+            System.out.println("5 — Transposition B");
+        }
+        System.out.println("6 — Determinant A");
+        if (hasB) {
+            System.out.println("7 — Determinant B");
+        }
+        System.out.println("0 — Exit");
+        System.out.print("> ");
+    }
+
+    // checking existence of matrix B
+    private static void requireB(ComplexMatrix b) {
+        if (b == null) {
+            throw new IllegalArgumentException(
+                    "The operation requires matrix B, but it was not set ");
+        }
     }
 
     //checking the correct(integer*integer) matrix size
