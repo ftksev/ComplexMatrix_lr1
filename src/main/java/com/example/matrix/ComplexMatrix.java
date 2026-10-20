@@ -62,7 +62,7 @@ public class ComplexMatrix {
             for (int j = 0; j < other.cols; j++) {
                 Complex sum = new Complex(0, 0);
                 for (int k = 0; k < this.cols; k++) {
-                    sum = sum.add(this.data[i][j].mul(other.data[k][j]));
+                    sum = sum.add(this.data[i][k].mul(other.data[k][j]));
                 }
                 result.data[i][j] = sum;
             }
